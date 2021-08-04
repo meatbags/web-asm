@@ -5,11 +5,16 @@
   "main": "index.js",
   "scripts": {
     "pack": "webpack --mode production",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "astest": "node tests"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.8.4",
+    "assemblyscript": "^0.19.10",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "css-loader": "^3.2.0",
@@ -25,5 +30,8 @@
     "webpack-preset-babel": "^0.2.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@assemblyscript/loader": "^0.19.10"
+  }
 }

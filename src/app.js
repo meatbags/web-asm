@@ -1,31 +1,22 @@
 /** App */
 
-import WASMWorker from './wasm_worker';
+//import WASMWorker from './wasm_worker';
+import loader from "@assemblyscript/loader"
 
 class App {
   constructor() {
     // worker
-    let w = new WASMWorker();
+    // let w = new WASMWorker();
 
     // WASM test
     // WebAssembly.instantiateStreaming(fetch('./build/app.wasm'), {})
 		// .then(res => { console.log(res); });
 
-    let importObject = {
-      env: {
-        memoryBase: 0,
-        tableBase: 0,
-        memory: new WebAssembly.Memory({ initial: 256 }),
-        table: new WebAssembly.Table({ initial: 2, element: 'anyfunc' }),
-        abort: console.log,
-        env: {},
-      }
-    };
-    fetch('./build/app.wasm')
+    fetch('build/optimized.wasm')
       .then(res => res.arrayBuffer())
-      .then(bytes => WebAssembly.instantiate(bytes, importObject))
-      .then(res => {
-        console.log(res);
+      .then(bytes => loader.instantiate(bytes, {}))
+      .then(({ exports }) => {
+        console.log(exports.add(1, 2));
       });
   }
 }
