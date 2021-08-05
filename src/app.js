@@ -1,7 +1,8 @@
 /** App */
 
 //import WASMWorker from './wasm_worker';
-import loader from "@assemblyscript/loader"
+import loader from "@assemblyscript/loader";
+import Benchmark from './benchmark';
 
 class App {
   constructor() {
@@ -32,13 +33,20 @@ class App {
   }
 
   bench() {
-    const sumJS = (a, b) => a + b;
-    const sumASM = this.asm.sum;
-    const now = performance.now();
-    const iter = 10000000;
-    this.runBenchmark(() => { sumJS(2047,3032); }, iter).then(res => { console.log('JS', res-now); });
-    this.runBenchmark(() => { sumASM(2047,3032); }, iter).then(res => { console.log('ASM', res-now); });
+    const benchJS = () => {
+      let sum = 0;
+      for (let i=0; i<100000; i++) {
+        sum += Math.random() * Math.random();
+      }
+      return 0;
+    };
+    const benchASM = this.asm.bench;
 
+    // run benchmark
+    const benchmark = new Benchmark();
+    benchmark.add('ASM', () => { benchASM(); });
+    benchmark.add('JS', () => { benchJS(); });
+    benchmark.run();
   }
 }
 
