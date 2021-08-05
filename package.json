@@ -8,7 +8,8 @@
     "watch": "webpack --mode development --watch",
     "asbuild:untouched": "asc assembly/index.ts --target debug",
     "asbuild:optimized": "asc assembly/index.ts --target release",
-    "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
+    "asbuild:fast": "asc assembly/index.ts -b build/out.wasm -t build/out.wat -O3 --noAssert --sourceMap",
+    "asbuild": "npm run asbuild:untouched && npm run asbuild:fast",
     "astest": "node tests"
   },
   "devDependencies": {
